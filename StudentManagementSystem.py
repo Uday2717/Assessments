@@ -1,82 +1,154 @@
-class Student:
-    def __init__(self,roll_no,fname,lname,contactnumber,subject,marks,fees):
-        self.roll_no = roll_no
-        self.fname = fname
-        self.lname = lname
-        self.contactnumber = contactnumber
-        self.subject = subject
-        self.marks = marks
-        self.fees = fees
+students = {}
 
-class StudentManagementSystem:
-    def __init__(self):
-        self.students = []
 
-    def add_student(self,roll_no,fname,lname,contactnumber,subject,marks,fees):
-        student = Student(roll_no,fname,lname,contactnumber,subject,marks,fees)
-        self.students.append(student)
+def add_student():
+    student_id=int(input("Enter Student Id :"))
+    if student_id in students:
+        print("Student ID already exists!")
+        print("**********************************")
+        return False
+    else:
+        student_fname=input("Enter Student First Name :")
+        student_lname=input("Enter Studnet Last Name :")
+        student_contact=input("Enter Contact Number :")
+        subject=input("Enter a subject:")
+        marks=int(input("Enter marks :"))
+        fees=int(input("Enter fees : "))
+        student[student_id]={
+            "first_name":student_fname,
+            "last_name":student_lname,
+            "contact":student_contact,
+            "subjects":{
+                subject:{
+                    "marks":marks,
+                    "fees":fees
+                    }
+                }
+            }
+        print("Student added successfully")
+        print("***********************************")
 
-    def display_students(self):
-        print("Student List:")
-        for student in self.students:
-            print(f"Name: {student.fname}, Roll No: {student.roll_no}, Grade: {student.grade}")
 
-    def update_student_grade(self, roll_no, new_grade):
-        for student in self.students:
-            if student.roll_no == roll_no:
-                student.grade = new_grade
-                print(f"Grade updated for {student.fname} (Roll No: {student.roll_no})")
+def remove(student_id):
+    if student_id in students:
+        del students[student_id]
+        print("Student removed successfully")
+        print("************************************")
+    else:
+        print("Student ID Not Found")
+        print("************************************")
 
-    def delete_student(self, roll_no):
-        for student in self.students:
-            if student.roll_no == roll_no:
-                self.students.remove(student)
-                print(f"Deleted student with Roll No: {roll_no}")
-                return
-        print(f"Student with Roll No: {roll_no} not found")
+def specific_student(student_id):
+    if student_id in students:
+        student_info=students[students[student_id]]
+        student_data={
+            "student_id":student_id,
+            "first_name":student_info["first_name"],
+            "last_name":student_info["last_name"],
+            "contact":student_info["contact"],
+            "subjects":student_info["subjects"]
+            }
+        print("Student Details:")
+        print(student_data)
+        print("**********************************")
+    else:
+        print("Student ID Not Found")
+        print("**************************************")
 
-def main():
-    student_system = StudentManagementSystem()
 
+def view_all_students():
+    if not students:
+        print("No students registered yet")
+        print("**************************************")
+    else:
+        for student_id,student_info in students.items():
+            student_data={
+                "student_id":student_id,
+                "first_name":student_info["first_name"],
+                "last_name":student_info["last_name"],
+                "contact":student_info["contact"],
+                "subjects":student_info["subjects"]
+            }
+            print(atudent_data)
+
+def counseller():
     while True:
-        print("\nStudent Management System")
         print("1. Add Student")
-        print("2. Display Students")
-        print("3. Update Student Grade")
-        print("4. Delete Student")
+        print("2. Remove Student")
+        print("3. View All Students")
+        print("4. View Specific Student")
         print("5. Exit")
+        print("**************************************")
+        choice = int(input("Enter Your Choice:"))
+        print("**************************************")
+        if choice == 1:
+            add_student()
+        elif choice == 2:
+            student_id = int(input("Enter Student ID To Remove:"))
+            remove(student_id)
+        elif choice == 3:
+            view_all_students()
+        elif choice == 4:
+            student_id = int(input("Enter Student ID To View Details:"))
+            specific_student(student_id)
+        elif choice == 5:
+            break
+        else:
+            print("Invalid Choice!")
 
-        choice = input("Enter your choice: ")
 
-        if choice == '1':
-            roll_no = input("Enter student roll number: ")
-            fname = input("Enter student FirstName: ")
-            lname = input("Enter student LastName: ")
-            contactnumber = int(input("Enter Contact Number: "))
-            subject = input("Enter A Subject: ")
-            marks = input("Enter student Marks: ")
-            fees = input("Enter Student Fees:")
-            student_system.add_student(roll_no,fname,lname,contactnumber,subject,marks,fees)
-            print("Student added successfully!")
+def student_faculty(student_id):
+    if student_id in students:
+        subject = input("Enter Subject:")
+        marks = int(input("Enter Marks:"))
+        students[student_id]["subjects"][subject]={
+            "marks":marks
+        }
+        print("Marks Added Successfully!")
+        print("**************************************")
+    else:
+            print("Student ID Not Found!")
+            print("**************************************")
 
-        elif choice == '2':
-            student_system.display_students()
 
-        elif choice == '3':
-            roll_no = input("Enter roll number of student to update grade: ")
-            new_grade = input("Enter new grade: ")
-            student_system.update_student_grade(roll_no, new_grade)
+def faculty():
+    while True:
+        print("1. Add Marks To Student")
+        print("2. View All Students")
+        print("3. Exit")
+        print("**************************************")
+        choice = int(input("Choice What You Want:"))
+        print("**************************************")
 
-        elif choice == '4':
-            roll_no = input("Enter roll number of student to delete: ")
-            student_system.delete_student(roll_no)
-
-        elif choice == '5':
-            print("Exiting program...")
+        if choice == 1:
+            student_id = int(input("Enter Student ID To Add Marks:"))
+            student_faculty(student_id)
+        elif choice == 2:
+            view_all_students()
+        else:
+            print("Invalid Choice!")
+            print("**************************************")
             break
 
-        else:
-            print("Invalid choice. Please choose again.")
 
-if __name__ == "__main__":
-    main()
+while True:
+    print("Press 1 For Counseller")
+    print("Press 2 For Faculty")
+    print("Press 3 For Student")
+    print("**************************************")
+    role = int(input("Enter Your Role:"))
+    print("**************************************")
+    if role == 1:
+        counseller()
+    elif role == 2:
+        faculty()
+    elif role == 3:
+        student_id = int(input("Enter Student ID To View Details:"))
+        specific_student(student_id)
+    else:
+        print("Invalid Role!")
+        print("**************************************")
+        break
+    
+            
+        
